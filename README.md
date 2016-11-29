@@ -4,8 +4,17 @@ Generates a unique tracking pixel per arg/kwargs set. Great for detecting email 
 
 Requires a single instantiation of TrackingPixelBase to define behavior and the class registered with ptrack.
 
+Add ptrack to your installed apps:
+
+    INSTALLED_APPS = (
+        ...,
+        'ptrack',
+        ...
+    )
+
 In templates:
     
+    {% load ptrack %}
     {% ptrack 'arg' key1='arg1' key2='arg2' ... %}
 
 In views, define the tracking functionality, by overriding base class and registering the new class:
