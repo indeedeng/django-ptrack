@@ -8,7 +8,7 @@ In templates:
     
     {% ptrack 'arg' key1='arg1' key2='arg2' ... %}
 
-In views, define the tracking functionality, by overriding base class:
+In views, define the tracking functionality, by overriding base class and registering the new class:
     
     import ptrack
     class CustomTrackingPixel(ptrack.TrackingPixelBase):
@@ -17,6 +17,7 @@ In views, define the tracking functionality, by overriding base class:
                 log.info(arg)
             for keys, values in kwargs:
                 log.info(keys + ":" + values)
+                
     ptrack.register(CustomTrackingPixel)
     
 In url.py:
