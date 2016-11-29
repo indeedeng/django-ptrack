@@ -1,6 +1,8 @@
 # Django Pixel Tracking
 
-Generates a unique tracking pixel per arg/kwargs set. Requires a single instantiation of TrackingPixelBase to define behavior and the class registered with ptrack.
+Generates a unique tracking pixel per arg/kwargs set. Great for detecting email open rates.
+
+Requires a single instantiation of TrackingPixelBase to define behavior and the class registered with ptrack.
 
 In templates:
     
