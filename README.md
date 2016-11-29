@@ -4,7 +4,7 @@ Generates a unique tracking pixel per arg/kwargs set. Requires a single instanti
 
 In templates:
     
-    {% ptrack key1='arg1' key2='arg2' key3='arg3' ... %}
+    {% ptrack 'arg1' key1='arg2' ... %}
 
 In views, define the tracking functionality, by overriding base class:
     
