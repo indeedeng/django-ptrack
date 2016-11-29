@@ -17,6 +17,6 @@ In views, define the tracking functionality, by overriding base class:
                 log.info(keys + ":" + values)
     ptrack.register(CustomTrackingPixel)
     
-Tracking pixel will automatically be added to:
+In url.py:
 
-    "/ptrack/(?P<key>)" as part of your app.
+    url('^ptrack/', include('ptrack.urls')),
