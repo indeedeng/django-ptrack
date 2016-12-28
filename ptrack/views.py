@@ -8,9 +8,9 @@ TRANSPARENT_1_PIXEL_GIF = "\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\
 class TrackingPixel(TemplateView):
     
     def get(self, request, *args, **kwargs):
-        ptrack_encrypted_data = kwargs['ptrack_encrypted_data']
+        ptrack_encoded_data = kwargs['ptrack_encoded_data']
         try:
-            args, kwargs = decrypt(ptrack_encrypted_data)
+            args, kwargs = decrypt(ptrack_encoded_data)
             tracker.call_callbacks(*args, **kwargs)
         except TypeError, ValueError:
             # Ignore any non valid inputs
