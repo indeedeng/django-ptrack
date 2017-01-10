@@ -15,6 +15,9 @@ Add ptrack to your installed apps:
 Define a secret that is 32-bytes or fewer:
     PTRACK_SECRET = ""
 
+Define the app url for ptrack
+    PTRACK_APP_URL = ""
+
 In templates:
     
     {% load ptrack %}
