@@ -51,6 +51,10 @@ In url.py:
 # Validation requirements
     Ptrack won't run the callbacks if someone is trying to guess a url endpoint. It will ignore anything it can't decrypt or serialize.
 
+# Notes
+    * When testing locally, the tracking pixel will show a blank box rather than be invisible, because gmail can't handle reading from localhost
+    * It's best to include the tracking pixel at the bottom of an email or page, because if the server has downtime, the pixel will become visible.
+
 # Security Notes
 This library uses ECB mode. From the words of Feni:
 https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29
