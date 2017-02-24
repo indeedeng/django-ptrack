@@ -1,18 +1,21 @@
+"""Ptrack Template Tag"""
 from django import template
-from ..utils import encrypt
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from .. import ptrack_encoder
 
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def ptrack(context, *args, **kwargs):
-    sub_path = reverse('ptrack', kwargs={'ptrack_encoded_data':encrypt(*args,**kwargs)})
-    
+@register.simple_tag
+def ptrack(*args, **kwargs):
+    """Generate a tracking pixel html img element."""
     if settings.PTRACK_APP_URL:
+        encoded_dict = {'ptrack_encoded_data': ptrack_encoder.encrypt(*args, **kwargs)}
+        sub_path = reverse('ptrack', kwargs=encoded_dict)
+
         url = "%s%s" % (settings.PTRACK_APP_URL, sub_path)
     else:
-        raise Error("PTRACK_APP_URL not defined")
+        raise Exception("PTRACK_APP_URL not defined")
 
     return "<img src='%s' width=1 height=1>" % (url,)

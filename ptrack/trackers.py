@@ -1,29 +1,34 @@
-import ptrack
+""" Ptrack Tracker: TrackingPixel registry and tracker """
 import inspect
+import ptrack
+
 
 class Tracker(object):
     """
-    An PtrackSite object encapsulates an instance of the Django ptrack application, ready
-    to be hooked in to your URLconf. Models are registered with the PtrackSite using the
-    register() method.
+    A Tracker object encapsulates an instance of the Django ptrack application, ready
+    to be hooked in to your URLconf. TrackingPixel callbacks are registered with the
+    Tracker PtrackSite using the register() method.
     """
 
     def __init__(self, name='ptrack'):
-        self._registry = {}  # (class_name, class_instance)
+        """ Set up the tracking TrackingPixel registry and tracker name """
+        self._registry = {}  # {class_name: class_instance}
         self.name = name
 
-    def register(self, custom_ptrack_class):
-        if inspect.isclass(custom_ptrack_class) == False:
-            raise Exception(custom_ptrack_class + "is not a class, must inherit from ptrack.TrackingPixel")
-        if custom_ptrack_class.__name__ in self._registry:
-            raise Exception("ptrack already has class "+ custom_ptrack_class.__name__+" registered")
-        elif issubclass(custom_ptrack_class, ptrack.TrackingPixel) == False:
-            raise Exception(custom_ptrack_class.__name__ + "does not inherit from ptrack.TrackingPixel")
+    def register(self, trackingpixel_callback):
+        """ Register a new TrackingPixel """
+        if inspect.isclass(trackingpixel_callback) is False:
+            raise Exception(trackingpixel_callback + "is not a class, must inherit from ptrack.TrackingPixel")
+        elif trackingpixel_callback.__name__ in self._registry:
+            raise Exception("ptrack already has class " + trackingpixel_callback.__name__ + " registered")
+        elif issubclass(trackingpixel_callback, ptrack.TrackingPixel) is False:
+            raise Exception(trackingpixel_callback.__name__ + "does not inherit from ptrack.TrackingPixel")
         else:
-            self._registry[custom_ptrack_class.__name__] = custom_ptrack_class()
+            self._registry[trackingpixel_callback.__name__] = trackingpixel_callback()
 
-    def call_callbacks(self,*args,**kwargs):
-        for key, instance in self._registry.items():
-            instance.record(*args,**kwargs)
+    def call_callbacks(self, *args, **kwargs):
+        """ Call each registered TrackingPixel's record method """
+        for _, instance in self._registry.items():
+            instance.record(*args, **kwargs)
 
 tracker = Tracker()

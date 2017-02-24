@@ -1,2 +1,5 @@
 *.egg*
 /src/*
+/ptrack_test.db
+/.coverage
+*.pyc

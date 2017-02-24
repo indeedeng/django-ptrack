@@ -1,10 +1,10 @@
-# Django Pixel Tracking
+# Django Ptrack
+Ptrack is a track pixel library for Django. Each tracking pixel is a unique encoded image generated per arg/kwargs set. Ptrack is great for detecting email open rates or creating your own pixel tracking API. Here at Indeed.com, ptrack generates tracking pixels with an average request to response lifecycle that is consistently < 80 ms.
 
-Generates a unique tracking pixel per arg/kwargs set. Great for detecting email open rates.
+Pip install:
+    django-ptrack
 
-Requires an implementation TrackingPixel to define behavior and registration with ptrack.
-
-Add ptrack to your installed apps:
+Add ptrack to your installed apps in settings:
 
     INSTALLED_APPS = (
         ...,
@@ -18,16 +18,20 @@ Define a secret that is 32-bytes or fewer:
 Define the app url for ptrack
     PTRACK_APP_URL = ""
 
+Note: One benefit of the PTRACK_APP_URL is that if you want pixel tracking on emails sent from a web app hosted on an internal network, can create a public facing mirror web app that records the pixels. As long as the internal app and external app both share the same PTRACK_SECRET and are registered on the same url path prefix, it should just work.
+
 In templates:
-    
+
     {% load ptrack %}
     {% ptrack 'arg' key1='arg1' key2='arg2' ... %}
 
 When this is tag is expanded, it'll generate a tracking pixel of form
     <img src="{{ENCRYPTED_URL}}" width=1 height=1>
 
+Ptrack will automatically search your project for a file called pixels.py, which is where you register your pixel tracking callbacks.
+
 In your project, create a file called pixels.py, define the tracking functionality, by overriding base class, defining the record() method, and registering the new class:
-    
+
     import ptrack
     class CustomTrackingPixel(ptrack.TrackingPixel):
         def record(self, *args, **kwargs):
@@ -38,25 +42,31 @@ In your project, create a file called pixels.py, define the tracking functionali
                     log.info("Recorded test email")
                 else:
                     log.info(key + ":" + value)
-                
-    ptrack.site.register(CustomTrackingPixel)
+     
+    ptrack.tracker.register(CustomTrackingPixel)
+
 
 The record() method is a callback that is executed whenever your tracking pixel is loaded. You can register multiple definitions of ptrack.TrackingPixel to chain callbacks, although there is no gaurantee of the order they will execute. A technical detail is that the tracking response will not complete until all the record() methods have finished executing, so you shouldn't run any long running blocking processes.
 
-In url.py:
+In url.py, register 'ptrack.urls' on your desired url prefix pattern:
 
     url('^ptrack/', include('ptrack.urls')),
 
 
 # Validation requirements
-    Ptrack won't run the callbacks if someone is trying to guess a url endpoint. It will ignore anything it can't decrypt or serialize.
+    Ptrack won't run the callbacks if someone is trying to guess a url endpoint. It will ignore anything it can't decrypt or deserialize.
 
 # Notes
-    * When testing locally, the tracking pixel will show a blank box rather than be invisible, because gmail can't handle reading from localhost
-    * It's best to include the tracking pixel at the bottom of an email or page, because if the server has downtime, the pixel will become visible.
+    * When testing locally, the tracking pixel will show an empty box rather than be invisible, because gmail can't handle reading from localhost
+    * It's best to include the tracking pixel at the bottom of an email or page, because if the server has downtime, the pixel will become visible as an empty box.
 
-# Security Notes
-This library uses ECB mode. From the words of Feni:
-https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29
-ECB mode encrypts each block separately without any mixing. The disadvantage of this is that if you have two ptack tags that encrypt "user=user1 key=val1" and "user=user2 key=val2" an attacker could take those two encrypted blobs and construct something that will decrypt to "user=user1 key=val2". It's not a big deal since this is mostly meant for logging, but CBC mode might be better. See http://stackoverflow.com/questions/12524994/encrypt-decrypt-using-pycrypto-aes-256 for reference.
-At some point, it would be good to investigate better encrytion methods.
+# Testing
+Navigate to the ptrack directory on your local machine and run
+
+    python setup.py test
+
+# Adding an encoder
+While ptrack should work out of the box, you have the ability to create your own encoder. In your application's pixels.py, create a class with static encrypt and decrypt methods. Suppose you created a class MyEncoder, you could then register the encoder with:
+
+    import ptrack
+    ptrack.ptrack_encoder = MyEncoder

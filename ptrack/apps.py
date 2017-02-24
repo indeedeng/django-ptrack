@@ -1,5 +1,5 @@
+"""AppConfig Setup"""
 from django.apps import AppConfig
-
 
 class SimplePtrackConfig(AppConfig):
     """Simple AppConfig which does not do automatic discovery."""
