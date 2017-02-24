@@ -13,9 +13,11 @@ Add ptrack to your installed apps in settings:
     )
 
 Define a secret that is 32-bytes or fewer:
+
     PTRACK_SECRET = ""
 
 Define the app url for ptrack
+
     PTRACK_APP_URL = ""
 
 Note: One benefit of the PTRACK_APP_URL is that if you want pixel tracking on emails sent from a web app hosted on an internal network, can create a public facing mirror web app that records the pixels. As long as the internal app and external app both share the same PTRACK_SECRET and are registered on the same url path prefix, it should just work.
@@ -26,6 +28,7 @@ In templates:
     {% ptrack 'arg' key1='arg1' key2='arg2' ... %}
 
 When this is tag is expanded, it'll generate a tracking pixel of form
+
     <img src="{{ENCRYPTED_URL}}" width=1 height=1>
 
 Ptrack will automatically search your project for a file called pixels.py, which is where you register your pixel tracking callbacks.
