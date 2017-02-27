@@ -1,5 +1,7 @@
 # Django Ptrack
-Ptrack is a track pixel library for Django. Ptrack is great for detecting email open rates or creating your own pixel tracking API. Each tracking pixel is a unique encoded image generated per arg/kwargs set. Unlike other tracking pixel libraries, Ptrack is stateless and does not require a database. Instead, ptrack providers the developer the ability to pass in meta data which is encrypted and store in the img url. Here at Indeed.com, ptrack generates tracking pixels with an average request to response lifecycle that is consistently < 80 ms.
+Ptrack is a track pixel library for Django. Ptrack is great for detecting email open rates or creating your own pixel tracking API. Here at Indeed.com, ptrack generates tracking pixels with an average request to response lifecycle that is consistently < 80 ms.
+
+Each tracking pixel is a unique encoded image generated per arg/kwargs set. Unlike other tracking pixel libraries, Ptrack is stateless and does not require a database. Instead, ptrack providers the developer the ability to pass in meta data which is encrypted and store in the img url. 
 
 Pip install:
     django-ptrack
