@@ -1,5 +1,5 @@
 # Django Ptrack
-Ptrack is a track pixel library for Django. Each tracking pixel is a unique encoded image generated per arg/kwargs set. Ptrack is great for detecting email open rates or creating your own pixel tracking API. Here at Indeed.com, ptrack generates tracking pixels with an average request to response lifecycle that is consistently < 80 ms.
+Ptrack is a track pixel library for Django. Ptrack is great for detecting email open rates or creating your own pixel tracking API. Each tracking pixel is a unique encoded image generated per arg/kwargs set. Unlike other tracking pixel libraries, Ptrack is stateless and does not require a database. Instead, ptrack providers the developer the ability to pass in meta data which is encrypted and store in the img url. Here at Indeed.com, ptrack generates tracking pixels with an average request to response lifecycle that is consistently < 80 ms.
 
 Pip install:
     django-ptrack
@@ -60,8 +60,9 @@ In url.py, register 'ptrack.urls' on your desired url prefix pattern:
     Ptrack won't run the callbacks if someone is trying to guess a url endpoint. It will ignore anything it can't decrypt or deserialize.
 
 # Notes
-    * When testing locally, the tracking pixel will show an empty box rather than be invisible, because gmail can't handle reading from localhost
-    * It's best to include the tracking pixel at the bottom of an email or page, because if the server has downtime, the pixel will become visible as an empty box.
+* When testing locally, the tracking pixel will show an empty box rather than be invisible, because gmail can't handle reading from localhost
+* It's best to include the tracking pixel at the bottom of an email or page, because if the server has downtime, the pixel will become visible as an empty box.
+* Realize that your encoded meta data tied to the tracking pixel is stored in the URL. A good rule of thumb is that the # of characters you store should be less than 0.5 * (the maximum character limit of the browser you want to support)
 
 # Testing
 Navigate to the ptrack directory on your local machine and run
