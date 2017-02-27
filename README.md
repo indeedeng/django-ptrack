@@ -3,7 +3,9 @@ Ptrack is a track pixel library for Django. Ptrack is great for detecting email 
 
 Each tracking pixel is a unique encoded image generated per arg/kwargs set. Unlike other tracking pixel libraries, Ptrack is stateless and does not require a database. Instead, ptrack providers the developer the ability to pass in meta data which is encrypted and store in the img url. 
 
+
 Pip install:
+
     django-ptrack
 
 Add ptrack to your installed apps in settings:
