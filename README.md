@@ -69,7 +69,7 @@ Navigate to the ptrack directory on your local machine and run
     python setup.py test
 
 # Adding an encoder
-While ptrack should work out of the box, you have the ability to create your own encoder. In your application's pixels.py, create a class with static encrypt and decrypt methods. Suppose you created a class MyEncoder, you could then register the encoder with:
+While ptrack should work out of the box, you have the ability to create your own encoder. Suppose you created a class MyEncoder, with a static encrypt and decrypt methods. In your application's pixels.py, you could then register the encoder with:
 
     import ptrack
     ptrack.ptrack_encoder = MyEncoder
