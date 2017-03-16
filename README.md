@@ -1,81 +1,115 @@
 # Django Ptrack
-Ptrack is a track pixel library for Django. Ptrack is great for detecting email open rates or creating your own pixel tracking API. Here at Indeed.com, ptrack generates tracking pixels with an average request to response lifecycle that is consistently < 80 ms.
+Ptrack is a track pixel library for Django.
 
-Each tracking pixel is a unique encoded image generated per arg/kwargs set. Unlike other tracking pixel libraries, Ptrack is stateless and does not require a database. Instead, ptrack providers the developer the ability to pass in meta data which is encrypted and store in the img url. 
+You can use Ptrack to detect email open rates or to create your own pixel tracking API.
+When used by Indeed, Ptrack generates pixels with average request to response lifecycles of <80 ms.
 
-___
+Each tracking pixel is a unique encoded image generated per arg/kwargs set.
+Unlike other tracking pixel libraries, Ptrack is stateless and does not require a database.
+Instead, ptrack allows developers to pass in metadata which is encrypted and stored in the image url.
 
-Pip install:
+## Getting Started
+Install the library using Pip:
+```
+pip django-ptrack
+```
 
-    django-ptrack
+### Configuration
+1. Add Ptrack to your installed apps in settings:
+```
+INSTALLED_APPS = (
+    ...,
+    'ptrack',
+    ...
+)
+```
 
-Add ptrack to your installed apps in settings:
+2. Define a secret that is 32-character bytes or fewer.
+The secret is used to create an encrypted tracking pixel url.
+```
+PTRACK_SECRET = ""
+```
 
-    INSTALLED_APPS = (
-        ...,
-        'ptrack',
-        ...
-    )
+3.  Define a Ptrack app URL in your settings. This is the domain that the tracking pixel will be based on.
+```
+PTRACK_APP_URL = ""
+```
 
-Define a secret that is 32-bytes or fewer:
-
-    PTRACK_SECRET = ""
-
-Define the app url for ptrack
-
-    PTRACK_APP_URL = ""
-
-Note: One benefit of the PTRACK_APP_URL is that if you want pixel tracking on emails sent from a web app hosted on an internal network, can create a public facing mirror web app that records the pixels. As long as the internal app and external app both share the same PTRACK_SECRET and are registered on the same url path prefix, it should just work.
-
-In templates:
-
-    {% load ptrack %}
-    {% ptrack 'arg' key1='arg1' key2='arg2' ... %}
-
-When this is tag is expanded, it'll generate a tracking pixel of form
-
-    <img src="{{ENCRYPTED_URL}}" width=1 height=1>
-
-Ptrack will automatically search your project for a file called pixels.py, which is where you register your pixel tracking callbacks.
-
-In your project, create a file called pixels.py, define the tracking functionality, by overriding base class, defining the record() method, and registering the new class:
-
-    import ptrack
-    class CustomTrackingPixel(ptrack.TrackingPixel):
-        def record(self, *args, **kwargs):
-            for arg in args:
-                log.info(arg)
-            for key, value in kwargs:
-                if key == "testemail1":
-                    log.info("Recorded test email")
-                else:
-                    log.info(key + ":" + value)
-     
-    ptrack.tracker.register(CustomTrackingPixel)
+*NOTE:* The PTRACK_APP_URL gives you a lot of flexibility.
+For example, if you are trying to track emails from a web app hosted on an internal network, you can deploy a public facing mirror web app that records the pixels.
+As long as the internal and external apps share the same secret and are registered on the same URL path prefix, tracking should work.
 
 
-The record() method is a callback that is executed whenever your tracking pixel is loaded. You can register multiple definitions of ptrack.TrackingPixel to chain callbacks, although there is no gaurantee of the order they will execute. A technical detail is that the tracking response will not complete until all the record() methods have finished executing, so you shouldn't run any long running blocking processes.
 
-In url.py, register 'ptrack.urls' on your desired url prefix pattern:
+## Using Ptrack
+Load and define Ptrack in templates:
+```
+{% load ptrack %}
+{% ptrack 'arg' key1='arg1' key2='arg2' ... %}
+```
 
-    url('^ptrack/', include('ptrack.urls')),
+When this is tag is expanded, it generates a tracking pixel of form:
+```
+<img src="{{ENCRYPTED_URL}}" width=1 height=1>
+```
 
+### Define tracking functionality
+Ptrack automatically searches your project for a file called `pixels.py`, in which you register your pixel tracking callbacks.
 
-# Validation requirements
-    Ptrack won't run the callbacks if someone is trying to guess a url endpoint. It will ignore anything it can't decrypt or deserialize.
+Create this file in your project.
+Define the tracking functionality by overriding base class, defining the record() method, and registering the new class:
+```
+import ptrack
+class CustomTrackingPixel(ptrack.TrackingPixel):
+    def record(self, *args, **kwargs):
+        for arg in args:
+            log.info(arg)
+        for key, value in kwargs:
+            if key == "testemail1":
+                log.info("Recorded test email")
+            else:
+                log.info(key + ":" + value)
 
-# Notes
-* When testing locally, the tracking pixel will show an empty box rather than be invisible, because gmail can't handle reading from localhost
-* It's best to include the tracking pixel at the bottom of an email or page, because if the server has downtime, the pixel will become visible as an empty box.
-* Realize that your encoded meta data tied to the tracking pixel is stored in the URL. A good rule of thumb is that the # of characters you store should be less than 0.5 * (the maximum character limit of the browser you want to support)
+ptrack.tracker.register(CustomTrackingPixel)
+```
 
-# Testing
-Navigate to the ptrack directory on your local machine and run
+Whenever your tracking pixel is loaded, the record() callback method is executed. 
 
-    python setup.py test
+### Define multiple callbacks
+You can register multiple definitions of `ptrack.TrackingPixel` to chain callbacks, although there is no guarantee of the order they will execute. 
 
-# Adding an encoder
-While ptrack should work out of the box, you have the ability to create your own encoder. Suppose you created a class MyEncoder, with a static encrypt and decrypt methods. In your application's pixels.py, you could then register the encoder with:
+*NOTE:* The tracking response will not complete until all the record() methods have finished executing, so you shouldn't run any long running blocking processes.
 
-    import ptrack
-    ptrack.ptrack_encoder = MyEncoder
+### Register ptrack.urls
+In `url.py`, register 'ptrack.urls' on your desired url prefix pattern:
+```
+url('^ptrack/', include('ptrack.urls')),
+```
+
+## Validation requirements
+Ptrack ignores anything it cannot decrypt or deserialize.
+Callbacks are not run if someone attempts to guess a URL endpoint.
+
+## Notes
+* When testing locally, the tracking pixel appears as an empty box rather than appearing invisible.
+This is because Gmail can't handle reading from localhost.
+* If the server has downtime, the pixel appears as an empty box.
+For this reason, it is best to include the tracking pixel at the bottom of an email or page. 
+* Realize that the encoded metadata tied to the tracking pixel is stored in the URL.
+As a best practice, the number of characters you store should be less than half the maximum character limit of your supported browser. 
+
+## Testing
+To build tests, navigate to the ptrack directory on your local machine and run
+```
+python setup.py test
+```
+
+## Overriding the encoder
+While ptrack should work out of the box, you have the ability to create your own encoder. 
+
+Suppose you created a class MyEncoder, with _static_ `encrypt` and `decrypt` methods.
+In your application's `pixels.py`, you then register the encoder:
+```
+import ptrack
+ptrack.ptrack_encoder = MyEncoder
+```
