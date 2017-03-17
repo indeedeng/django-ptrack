@@ -11,7 +11,7 @@ Instead, ptrack allows developers to pass in metadata which is encrypted and sto
 ## Getting Started
 Install the library using Pip:
 ```
-pip django-ptrack
+pip install django-ptrack
 ```
 
 ### Configuration
