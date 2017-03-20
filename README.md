@@ -113,3 +113,15 @@ In your application's `pixels.py`, you then register the encoder:
 import ptrack
 ptrack.ptrack_encoder = MyEncoder
 ```
+
+## Installation Errors
+If you run into installation errors, such as:
+```
+distutils.errors.DistutilsError: Setup script exited with error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+```
+
+You may need to install system dependencies for PyNacl:
+```
+sudo apt-get install python-dev
+sudo apt-get install libffi-dev
+```
