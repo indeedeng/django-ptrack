@@ -32,7 +32,7 @@ PTRACK_SECRET = ""
 
 3.  Define a Ptrack app URL in your settings. This is the domain that the tracking pixel will be based on.
 ```
-PTRACK_APP_URL = ""
+PTRACK_APP_URL = "" # Example: PTRACK_APP_URL = "https://www.example.com"
 ```
 
 *NOTE:* The PTRACK_APP_URL gives you a lot of flexibility.
@@ -48,10 +48,20 @@ Load and define Ptrack in templates:
 {% ptrack 'arg' key1='arg1' key2='arg2' ... %}
 ```
 
-When this is tag is expanded, it generates a tracking pixel of form:
+When the ptrack template tag is expanded, it generates a tracking pixel of form:
 ```
 <img src="{{ENCRYPTED_URL}}" width=1 height=1>
 ```
+
+*NOTE:*
+* Keep in mind that valid arg and kwarg values must be json serializable. If non-valid inputs are provided, the template tag will throw an exception. 
+* When testing a tracking pixel in an email locally or with a domain that is not publicly accessible, the tracking pixel in the email will appear as an empty box rather than as an invisible pixel.
+The reason the image is rendered as an error image is because most email servers, such as Gmail, will proxy img tags.
+* Furthermore, if the server has downtime, the pixel appears as an empty box.
+For this reason, it is best to include the tracking pixel at the bottom of an email or page. 
+* Realize that the encoded metadata tied to the tracking pixel is stored in the URL.
+As a best practice, the number of characters you store should be less than half the maximum character limit of your supported browser. 
+
 
 ### Define tracking functionality
 Ptrack automatically searches your project for a file called `pixels.py`, in which you register your pixel tracking callbacks.
@@ -90,13 +100,6 @@ url('^ptrack/', include('ptrack.urls')),
 Ptrack ignores anything it cannot decrypt or deserialize.
 Callbacks are not run if someone attempts to guess a URL endpoint.
 
-## Notes
-* When testing locally, the tracking pixel appears as an empty box rather than appearing invisible.
-This is because Gmail can't handle reading from localhost.
-* If the server has downtime, the pixel appears as an empty box.
-For this reason, it is best to include the tracking pixel at the bottom of an email or page. 
-* Realize that the encoded metadata tied to the tracking pixel is stored in the URL.
-As a best practice, the number of characters you store should be less than half the maximum character limit of your supported browser. 
 
 ## Testing
 To build tests, navigate to the ptrack directory on your local machine and run

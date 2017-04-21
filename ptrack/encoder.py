@@ -6,14 +6,14 @@ import nacl.utils
 from django.conf import settings
 
 
-BLOCK_SIZE = 16
+BLOCK_SIZE = 32
 # Padding character
 PADDING = '{'
 
 
 def pad(msg):
-    """Padding for keys on 16 byte blocks."""
-    return msg + (BLOCK_SIZE - len(msg) % BLOCK_SIZE) * PADDING
+    """Padding for keys on 32 byte blocks."""
+    return msg + (BLOCK_SIZE - len(msg)) * PADDING
 
 
 class PtrackEncoder(object):
