@@ -54,7 +54,8 @@ When the ptrack template tag is expanded, it generates a tracking pixel of form:
 ```
 
 *NOTE:*
-* Keep in mind that valid arg and kwarg values must be json serializable. If non-valid inputs are provided, the template tag will throw an exception. 
+* Keep in mind that valid arg and kwarg values must be json serializable ints or strings.
+If non-valid inputs are provided, the template tag will throw an exception. 
 * When testing a tracking pixel in an email locally or with a domain that is not publicly accessible, the tracking pixel in the email will appear as an empty box rather than as an invisible pixel.
 The reason the image is rendered as an error image is because most email servers, such as Gmail, will proxy img tags.
 * Furthermore, if the server has downtime, the pixel appears as an empty box.
