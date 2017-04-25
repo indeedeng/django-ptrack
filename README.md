@@ -58,7 +58,7 @@ When the ptrack template tag is expanded, it generates a tracking pixel of form:
 If non-valid inputs are provided, the template tag will throw an exception. 
 * When testing a tracking pixel in an email locally or with a domain that is not publicly accessible, the tracking pixel in the email will appear as an empty box rather than as an invisible pixel.
 The reason the image is rendered as an error image is because most email servers, such as Gmail, will proxy img tags.
-* Furthermore, if the server has downtime, the pixel appears as an empty box.
+* If the server has downtime, the pixel appears as an empty box.
 For this reason, it is best to include the tracking pixel at the bottom of an email or page. 
 * Realize that the encoded metadata tied to the tracking pixel is stored in the URL.
 As a best practice, the number of characters you store should be less than half the maximum character limit of your supported browser. 
