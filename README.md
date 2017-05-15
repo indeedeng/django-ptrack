@@ -1,5 +1,5 @@
 # Django Ptrack
-Ptrack is a track pixel library for Django.
+Ptrack is a tracking pixel library for Django.
 
 You can use Ptrack to detect email open rates or to create your own pixel tracking API.
 When used by Indeed, Ptrack generates pixels with average request to response lifecycles of <80 ms.
