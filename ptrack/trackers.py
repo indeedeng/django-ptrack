@@ -26,9 +26,9 @@ class Tracker(object):
         else:
             self._registry[trackingpixel_callback.__name__] = trackingpixel_callback()
 
-    def call_callbacks(self, *args, **kwargs):
+    def call_callbacks(self, request, *args, **kwargs):
         """ Call each registered TrackingPixel's record method """
         for _, instance in self._registry.items():
-            instance.record(*args, **kwargs)
+            instance.record(request, *args, **kwargs)
 
 tracker = Tracker()

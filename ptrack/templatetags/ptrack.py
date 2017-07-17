@@ -3,6 +3,7 @@ from django import template
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from .. import ptrack_encoder
+from django.utils.html import mark_safe
 
 register = template.Library()
 
@@ -18,4 +19,4 @@ def ptrack(*args, **kwargs):
     else:
         raise Exception("PTRACK_APP_URL not defined")
 
-    return "<img src='%s' width=1 height=1>" % (url,)
+    return mark_safe("<img src='%s' width=1 height=1>" % (url,))
