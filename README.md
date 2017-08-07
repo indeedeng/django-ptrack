@@ -72,7 +72,8 @@ Define the tracking functionality by overriding base class, defining the record(
 ```
 import ptrack
 class CustomTrackingPixel(ptrack.TrackingPixel):
-    def record(self, *args, **kwargs):
+    def record(self, request, *args, **kwargs):
+        log.info(request.META['HTTP_USER_AGENT'])
         for arg in args:
             log.info(arg)
         for key, value in kwargs:

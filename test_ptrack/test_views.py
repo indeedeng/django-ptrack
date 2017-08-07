@@ -32,14 +32,14 @@ _test_data_params = [
 
 ]
 _test_encrypted_str = 'Ylk67uIkGhy5_ugiHhAgu0_oG72_S-lSGGfHeZOUjJBJZwzNOYruvZqhnQAnGv93td1YvI5K_W-telcEya7vSEosk66TyW00i5lM2_iWAr995vLjyxaL9Z5qBsG3BRec11mS652MhV2x1whSC35VpP63J-WjEP1ejl8AW68cuduH8HdfQSC6draXF7BWuiha706NYnXtESJDACsBJaUJ2aip7qu9JIYsrnKTMUUD7zTI-tqH0lXnxgJEBH2pAz9BPRi5GrjCj4k4xWGUJ6dXvcCQb8RYvH-LThGBjKDwSIkEIZcbNL5tisQWdRpU5xCu9Ig='
-template_tag_regex = re.compile("src=&#39;localhost/(?P<encrypted_data>\S+)/&#39; width=1")
+template_tag_regex = re.compile("src='localhost/(?P<encrypted_data>\S+)/' width=1")
 
 test_record = MagicMock()
 django_engine = engines['django']
 
 
 class TestTrackingPixel(ptrack.TrackingPixel):
-    def record(self, *args, **kwargs):
+    def record(self, request, *args, **kwargs):
         test_record(*args, **kwargs)
 
 ptrack.tracker.register(TestTrackingPixel)
@@ -79,12 +79,11 @@ class PtrackViewsTest(WebTest):
             test_record.assert_called_with(*test_args['args'], **test_args['kwargs'])
 
     def test_template_tag(self):
-        # location = reverse('test_home')
-        # response = self.app.get(location)
         for test_args in _test_data_params:
             template_tag_str = generate_template_tag_param_str(*test_args['args'], **test_args['kwargs'])
             template_str = u"{{% load ptrack %}}{{% ptrack {} %}}".format(template_tag_str)
             template_result = django_engine.from_string(template_str).render()
+
             encrypted_str = template_tag_regex.search(template_result).group(1)
             decrypted_data = ptrack.ptrack_encoder.decrypt(encrypted_str)
             self.assertEqual(decrypted_data[0], test_args['args'])

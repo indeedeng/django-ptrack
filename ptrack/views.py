@@ -24,5 +24,5 @@ class TrackingPixel(TemplateView):
             pass
 
         if args or kwargs:
-            tracker.call_callbacks(*args, **kwargs)
+            tracker.call_callbacks(request, *args, **kwargs)
         return HttpResponse(TRANSPARENT_1_PIXEL_GIF, content_type='image/gif')
