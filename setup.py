@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md')) as f:
 setup(
     name='django-ptrack',
     version='1.1.0',
-    description='A sample Python project',
+    description='Ptrack is a tracking pixel library for Django',
     long_description=long_description,
 
     url='https://github.com/indeedeng/django-ptrack',
