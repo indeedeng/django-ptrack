@@ -22,7 +22,7 @@ class PtrackEncoder(object):
     @staticmethod
     def decrypt(encoded_data):
         """Decrypt a base64 url string into a dictionary."""
-        key = pad(settings.PTRACK_SECRET)
+        key = pad(settings.PTRACK_SECRET).encode('utf8')
         box = nacl.secret.SecretBox(key)
 
         encrypted = base64.urlsafe_b64decode(encoded_data.encode('utf8'))
@@ -32,11 +32,11 @@ class PtrackEncoder(object):
     @staticmethod
     def encrypt(*args, **kwargs):
         """Encrypt args and kwargs into an encoded base64 url string."""
-        key = pad(settings.PTRACK_SECRET)
+        key = pad(settings.PTRACK_SECRET).encode('utf8')
         box = nacl.secret.SecretBox(key)
         nonce = nacl.utils.random(nacl.secret.SecretBox.NONCE_SIZE)
 
-        data = json.dumps((args, kwargs))
+        data = json.dumps((args, kwargs)).encode('utf8')
         encrypted = box.encrypt(data, nonce)
         encoded_data = base64.urlsafe_b64encode(encrypted)
         return encoded_data
