@@ -27,6 +27,8 @@ class PtrackEncoder(object):
 
         encrypted = base64.urlsafe_b64decode(encoded_data.encode('utf8'))
         data = box.decrypt(encrypted)
+        # json.loads expects a str, so we convert bytes to str
+        data = data.decode('utf8')
         return json.loads(data)
 
     @staticmethod
@@ -36,7 +38,9 @@ class PtrackEncoder(object):
         box = nacl.secret.SecretBox(key)
         nonce = nacl.utils.random(nacl.secret.SecretBox.NONCE_SIZE)
 
-        data = json.dumps((args, kwargs)).encode('utf8')
+        data = json.dumps((args, kwargs))
+        # box expects bytes, so we convert here
+        data = data.encode('utf8')
         encrypted = box.encrypt(data, nonce)
         encoded_data = base64.urlsafe_b64encode(encrypted)
         return encoded_data
