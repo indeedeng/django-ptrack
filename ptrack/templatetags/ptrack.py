@@ -1,6 +1,6 @@
 """Ptrack Template Tag"""
 from django import template
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from .. import ptrack_encoder
 from django.utils.html import mark_safe

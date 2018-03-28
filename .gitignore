@@ -3,3 +3,4 @@
 /ptrack_test.db
 /.coverage
 *.pyc
+.idea/

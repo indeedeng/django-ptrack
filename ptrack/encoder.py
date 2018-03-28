@@ -43,4 +43,4 @@ class PtrackEncoder(object):
         data = data.encode('utf8')
         encrypted = box.encrypt(data, nonce)
         encoded_data = base64.urlsafe_b64encode(encrypted)
-        return encoded_data
+        return encoded_data.decode('utf8')
