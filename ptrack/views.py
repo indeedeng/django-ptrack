@@ -1,10 +1,15 @@
 """ Ptrack Django Views """
-from django.views.generic import TemplateView
-from django.shortcuts import HttpResponse
-from ptrack import tracker
-import ptrack
+from base64 import b64decode
 
-TRANSPARENT_1_PIXEL_GIF = "\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00\x21\xf9\x04\x01\x00\x00\x00\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
+from django.shortcuts import HttpResponse
+from django.views.generic import TemplateView
+
+import ptrack
+from ptrack import tracker
+
+TRANSPARENT_1_PIXEL_PNG = b64decode(b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==")
+TRANSPARENT_1_PIXEL_GIF = b64decode(b"R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
+
 
 class TrackingPixel(TemplateView):
     """ Calls tracker callback (record) and returns Tracking Pixel gif """
@@ -25,4 +30,5 @@ class TrackingPixel(TemplateView):
 
         if args or kwargs:
             tracker.call_callbacks(request, *args, **kwargs)
-        return HttpResponse(TRANSPARENT_1_PIXEL_GIF, content_type='image/gif')
+        # return HttpResponse(TRANSPARENT_1_PIXEL_GIF, content_type='image/gif')
+        return HttpResponse(TRANSPARENT_1_PIXEL_PNG, content_type='image/png')
