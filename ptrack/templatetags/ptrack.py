@@ -19,4 +19,5 @@ def ptrack(*args, **kwargs):
     else:
         raise Exception("PTRACK_APP_URL not defined")
 
-    return mark_safe("<img src='%s' width=1 height=1>" % (url,))
+    return mark_safe(
+        '<img src="%s" width="1" height="1" alt="" border="0" style="height:1px;width:1px;border:0;" />' % (url,))

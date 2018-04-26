@@ -1,10 +1,10 @@
 """Ptrack Default Encoder"""
-import json
 import base64
+import json
+
 import nacl.secret
 import nacl.utils
 from django.conf import settings
-
 
 BLOCK_SIZE = 32
 # Padding character

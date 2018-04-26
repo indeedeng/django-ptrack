@@ -1,5 +1,6 @@
 """ Ptrack Tracker: TrackingPixel registry and tracker """
 import inspect
+
 import ptrack
 
 
@@ -30,5 +31,6 @@ class Tracker(object):
         """ Call each registered TrackingPixel's record method """
         for _, instance in self._registry.items():
             instance.record(request, *args, **kwargs)
+
 
 tracker = Tracker()
