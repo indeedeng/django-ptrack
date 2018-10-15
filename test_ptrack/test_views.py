@@ -1,10 +1,13 @@
+import imghdr
 import re
 from mock import MagicMock
+from tempfile import NamedTemporaryFile
 from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 from django.template import engines
 from django.template.loader import render_to_string
 import ptrack
+from ptrack.views import TRANSPARENT_1_PIXEL_GIF
 
 
 # setup
@@ -56,6 +59,13 @@ def generate_template_tag_param_str(*args, **kwargs):
 
 class PtrackViewsTest(WebTest):
     csrf_checks = False
+    
+    def test_pixel_image_is_valid(self):
+        with NamedTemporaryFile() as fp:
+            fp.write(TRANSPARENT_1_PIXEL_GIF)
+            fp.flush()
+            what = imghdr.what(fp.name)
+        self.assertEqual('gif', what)
 
     def test_app_is_accessible(self):
         response = self.app.get(reverse('ptrack', kwargs={'ptrack_encoded_data': _test_encrypted_str}))
