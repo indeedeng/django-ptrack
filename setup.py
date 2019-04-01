@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='django-ptrack',
-    version='2.0.0',
+    version='2.1.0',
     description='Ptrack is a tracking pixel library for Django',
     long_description=long_description,
 
@@ -30,6 +30,7 @@ setup(
         'Framework :: Django :: 1.9',
         'Framework :: Django :: 1.10',
         'Framework :: Django :: 1.11',
+        'Framework :: Django :: 2.0',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
