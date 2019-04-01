@@ -2,7 +2,10 @@ import imghdr
 import re
 from mock import MagicMock
 from tempfile import NamedTemporaryFile
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 from django.template import engines
 from django.template.loader import render_to_string
