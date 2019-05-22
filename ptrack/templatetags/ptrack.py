@@ -1,4 +1,6 @@
 """Ptrack Template Tag"""
+import logging
+
 from django import template
 try:
     from django.urls import reverse
@@ -8,6 +10,7 @@ from django.conf import settings
 from .. import ptrack_encoder
 from django.utils.html import mark_safe
 
+logger = logging.getLogger(__name__)
 register = template.Library()
 
 
@@ -22,4 +25,5 @@ def ptrack(*args, **kwargs):
     else:
         raise Exception("PTRACK_APP_URL not defined")
 
+    logger.debug("Ptrack tag generated URL: {}".format(url))
     return mark_safe("<img src='%s' width=1 height=1>" % (url,))
