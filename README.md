@@ -1,6 +1,6 @@
 # Django Ptrack
 
-![NetflixOSS Lifecycle](https://img.shields.io/osslifecycle/indeedeng/django-ptrack.svg)
+![OSS Lifecycle](https://img.shields.io/osslifecycle/indeedeng/django-ptrack.svg)
 
 Ptrack is a tracking pixel library for Django.
 
