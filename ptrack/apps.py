@@ -1,6 +1,7 @@
 """AppConfig Setup"""
 from django.apps import AppConfig
 
+
 class SimplePtrackConfig(AppConfig):
     """Simple AppConfig which does not do automatic discovery."""
 
@@ -8,6 +9,7 @@ class SimplePtrackConfig(AppConfig):
 
     def ready(self):
         super(SimplePtrackConfig, self).ready()
+
 
 class PtrackConfig(SimplePtrackConfig):
     """The default AppConfig for ptrack which does autodiscovery."""

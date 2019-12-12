@@ -1,7 +1,5 @@
 """Ptrack Setup"""
 import abc
-from django.views.generic import TemplateView
-from django.shortcuts import HttpResponse
 from django.conf import settings
 from django.utils.module_loading import autodiscover_modules
 from ptrack.trackers import tracker
@@ -15,12 +13,14 @@ if not hasattr(settings, 'PTRACK_SECRET'):
 elif len(settings.PTRACK_SECRET) > 32:
     raise Exception('PTRACK_SECRET must be less than 32 bytes')
 
+
 def autodiscover():
     """
     Autodiscover pixels.py file in project directory,
     then register tracker.
     """
     autodiscover_modules('pixels', register_to=tracker)
+
 
 class TrackingPixel(object):
     """The custom tracking pixel registered by tracker."""

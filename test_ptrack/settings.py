@@ -1,8 +1,3 @@
-# encoding: utf-8
-
-import os
-
-# DJANGO TEST SETTINGS
 SECRET_KEY = 'ptracktestsecret'
 STATIC_URL = '/'
 

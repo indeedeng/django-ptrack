@@ -18,11 +18,14 @@ class Tracker(object):
     def register(self, trackingpixel_callback):
         """ Register a new TrackingPixel """
         if inspect.isclass(trackingpixel_callback) is False:
-            raise Exception(trackingpixel_callback + "is not a class, must inherit from ptrack.TrackingPixel")
+            msg = trackingpixel_callback + "is not a class, must inherit from ptrack.TrackingPixel"
+            raise Exception(msg)
         elif trackingpixel_callback.__name__ in self._registry:
-            raise Exception("ptrack already has class " + trackingpixel_callback.__name__ + " registered")
+            msg = "ptrack already has class " + trackingpixel_callback.__name__ + " registered"
+            raise Exception(msg)
         elif issubclass(trackingpixel_callback, ptrack.TrackingPixel) is False:
-            raise Exception(trackingpixel_callback.__name__ + "does not inherit from ptrack.TrackingPixel")
+            msg = trackingpixel_callback.__name__ + "does not inherit from ptrack.TrackingPixel"
+            raise Exception(msg)
         else:
             self._registry[trackingpixel_callback.__name__] = trackingpixel_callback()
 
@@ -30,5 +33,6 @@ class Tracker(object):
         """ Call each registered TrackingPixel's record method """
         for _, instance in self._registry.items():
             instance.record(request, *args, **kwargs)
+
 
 tracker = Tracker()
