@@ -17,7 +17,7 @@ class TrackingPixel(TemplateView):
         """
         ptrack_encoded_data = kwargs['ptrack_encoded_data']
 
-        args, kwargs = None, None
+        args, kwargs = (), {}
         try:
             args, kwargs = ptrack.ptrack_encoder.decrypt(ptrack_encoded_data)
         except (TypeError, ValueError):
