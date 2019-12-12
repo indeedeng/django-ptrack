@@ -1,15 +1,14 @@
 import imghdr
 import re
-from mock import MagicMock
 from tempfile import NamedTemporaryFile
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
+from unittest.mock import MagicMock
+
 from django_webtest import WebTest
 from django.template import engines
 from django.template.loader import render_to_string
+
 import ptrack
+from ptrack.compat import reverse
 from ptrack.views import TRANSPARENT_1_PIXEL_GIF
 
 
@@ -55,7 +54,7 @@ def generate_template_tag_param_str(*args, **kwargs):
     param_str = u""
     for arg in args:
         param_str += u"'{}' ".format(arg)
-    for key, value in kwargs.iteritems():
+    for key, value in kwargs.items():
         param_str += u"{}='{}' ".format(key, value)
     return param_str
 
@@ -80,7 +79,7 @@ class PtrackViewsTest(WebTest):
 
     def test_registered_tracker_in_trackers(self):
         matched = False
-        for registered_tracker_name, registered_tracker in ptrack.tracker._registry.iteritems():
+        for registered_tracker_name, registered_tracker in ptrack.tracker._registry.items():
             if registered_tracker.__class__ == TestTrackingPixel:
                 matched = True
         self.assertEqual(matched, True)

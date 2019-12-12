@@ -48,12 +48,4 @@ setup(
     extras_require={
         'legacy': ['pycrypto>=2.6.1']
     },
-    tests_require=[
-        'nose==1.3.7',
-        'mock==2.0.0',
-        'django-webtest==1.8.0',
-        'coverage==4.3.',
-        'pylint==1.6.5'
-    ],
-    test_suite="test_ptrack.run_tests.run_all",
 )
