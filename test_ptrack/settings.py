@@ -21,11 +21,9 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'ptrack.urls'
 
-# Default classes plus SessionMiddleware and AuthenticationMiddleware
-MIDDLEWARE_CLASSES = (
+# django-webtest package requires SessionMiddleware and AuthenticationMiddleware
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
