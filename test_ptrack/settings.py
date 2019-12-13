@@ -21,12 +21,6 @@ INSTALLED_APPS = [
 
 ROOT_URLCONF = 'ptrack.urls'
 
-# django-webtest package requires SessionMiddleware and AuthenticationMiddleware
-MIDDLEWARE = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-)
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
