@@ -3,8 +3,8 @@ import re
 from tempfile import NamedTemporaryFile
 from unittest.mock import MagicMock
 
-from django_webtest import WebTest
 from django.template import engines
+from django.test import TestCase
 
 import ptrack
 from ptrack.compat import reverse
@@ -67,7 +67,7 @@ def generate_template_tag_param_str(*args, **kwargs):
     return param_str
 
 
-class PtrackViewsTest(WebTest):
+class PtrackViewsTest(TestCase):
     csrf_checks = False
 
     def test_pixel_image_is_valid(self):
@@ -79,13 +79,13 @@ class PtrackViewsTest(WebTest):
 
     def test_app_is_accessible(self):
         url = reverse('ptrack', kwargs={'ptrack_encoded_data': _test_encrypted_str})
-        response = self.app.get(url)
-        self.assertEqual(response.status_int, 200)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_random_decrypt_fails(self):
         url = reverse('ptrack', kwargs={'ptrack_encoded_data': 'thisisnotencryptedata'})
-        response = self.app.get(url)
-        self.assertEqual(response.status_int, 200)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_registered_tracker_in_trackers(self):
         matched = False
@@ -96,11 +96,11 @@ class PtrackViewsTest(WebTest):
 
     def test_registered_tracker_used(self):
         for test_args in _test_data_params:
-            encrypted_data = ptrack.ptrack_encoder.encrypt(
+            encrypted_data = ptrack.ptrack_encoder.encrypt_string(
                 *test_args['args'], **test_args['kwargs']
             )
             url = reverse('ptrack', kwargs={'ptrack_encoded_data': encrypted_data})
-            self.app.get(url)
+            self.client.get(url)
             test_record.assert_called_with(*test_args['args'], **test_args['kwargs'])
 
     def test_template_tag(self):

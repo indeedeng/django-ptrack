@@ -38,7 +38,7 @@ class PtrackEncoder(object):
 
     @staticmethod
     def encrypt(*args, **kwargs) -> bytes:
-        """Encrypt args and kwargs into an encoded base64 url string."""
+        """Return a base64 byte string with encoded positional/keyword args."""
         key = pad(settings.PTRACK_SECRET).encode('utf8')
         box = nacl.secret.SecretBox(key)
         nonce = nacl.utils.random(nacl.secret.SecretBox.NONCE_SIZE)
@@ -49,3 +49,8 @@ class PtrackEncoder(object):
         encrypted = box.encrypt(bytes_data, nonce)
         encoded_data = base64.urlsafe_b64encode(encrypted)
         return encoded_data
+
+    @staticmethod
+    def encrypt_string(*args, **kwargs) -> str:
+        """Return a base64 url string with encoded positional/keyword args."""
+        return PtrackEncoder.encrypt(*args, **kwargs).decode('utf8')
