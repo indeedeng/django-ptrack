@@ -34,7 +34,7 @@ TEMPLATES = [
     }
 ]
 
-ALLOWED_HOSTS = ['localhost', 'testserver']
+ALLOWED_HOSTS = ['localhost']
 
 
 # PTRACK SETTINGS
