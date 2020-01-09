@@ -4,7 +4,8 @@ from django.shortcuts import HttpResponse
 from ptrack import tracker
 import ptrack
 
-TRANSPARENT_1_PIXEL_GIF = b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00\x21\xf9\x04\x01\x00\x00\x00\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
+TRANSPARENT_1_PIXEL_GIF = b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00\x21\xf9\x04\x01\x00\x00\x00\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"  # noqa: E501
+
 
 class TrackingPixel(TemplateView):
     """ Calls tracker callback (record) and returns Tracking Pixel gif """
@@ -16,7 +17,7 @@ class TrackingPixel(TemplateView):
         """
         ptrack_encoded_data = kwargs['ptrack_encoded_data']
 
-        args, kwargs = None, None
+        args, kwargs = (), {}
         try:
             args, kwargs = ptrack.ptrack_encoder.decrypt(ptrack_encoded_data)
         except (TypeError, ValueError):

@@ -1,8 +1,3 @@
-# encoding: utf-8
-
-import os
-
-# DJANGO TEST SETTINGS
 SECRET_KEY = 'ptracktestsecret'
 STATIC_URL = '/'
 
@@ -25,14 +20,6 @@ INSTALLED_APPS = [
 ]
 
 ROOT_URLCONF = 'ptrack.urls'
-
-# Default classes plus SessionMiddleware and AuthenticationMiddleware
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-)
 
 TEMPLATES = [
     {
