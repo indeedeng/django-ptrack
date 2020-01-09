@@ -16,7 +16,7 @@ register = template.Library()
 def ptrack(*args, **kwargs):
     """Generate a tracking pixel html img element."""
     if settings.PTRACK_APP_URL:
-        encoded_dict = {'ptrack_encoded_data': ptrack_encoder.encrypt_string(*args, **kwargs)}
+        encoded_dict = {'ptrack_encoded_data': ptrack_encoder.encrypt(*args, **kwargs)}
         sub_path = reverse('ptrack', kwargs=encoded_dict)
 
         url = "%s%s" % (settings.PTRACK_APP_URL, sub_path)

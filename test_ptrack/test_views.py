@@ -96,7 +96,7 @@ class PtrackViewsTest(TestCase):
 
     def test_registered_tracker_used(self):
         for test_args in _test_data_params:
-            encrypted_data = ptrack.ptrack_encoder.encrypt_string(
+            encrypted_data = ptrack.ptrack_encoder.encrypt(
                 *test_args['args'], **test_args['kwargs']
             )
             url = reverse('ptrack', kwargs={'ptrack_encoded_data': encrypted_data})
