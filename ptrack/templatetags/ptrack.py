@@ -3,6 +3,7 @@ import logging
 
 from django import template
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.html import mark_safe
 
 from ptrack.compat import reverse
@@ -21,7 +22,7 @@ def ptrack(*args, **kwargs):
 
         url = "%s%s" % (settings.PTRACK_APP_URL, sub_path)
     else:
-        raise Exception("PTRACK_APP_URL not defined")
+        raise ImproperlyConfigured("PTRACK_APP_URL not defined")
 
     logger.debug("Ptrack tag generated URL: {}".format(url))
     return mark_safe("<img src='%s' width=1 height=1>" % (url,))

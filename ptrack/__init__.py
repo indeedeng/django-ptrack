@@ -1,6 +1,7 @@
 """Ptrack Setup"""
 import abc
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.module_loading import autodiscover_modules
 from ptrack.trackers import tracker
 from ptrack.encoder import PtrackEncoder
@@ -9,9 +10,9 @@ default_app_config = 'ptrack.apps.PtrackConfig'
 ptrack_encoder = PtrackEncoder
 
 if not hasattr(settings, 'PTRACK_SECRET'):
-    raise Exception('PTRACK_SECRET is not defined')
+    raise ImproperlyConfigured('PTRACK_SECRET is not defined')
 elif len(settings.PTRACK_SECRET) > 32:
-    raise Exception('PTRACK_SECRET must be less than 32 bytes')
+    raise ImproperlyConfigured('PTRACK_SECRET must be less than 32 bytes')
 
 
 def autodiscover():

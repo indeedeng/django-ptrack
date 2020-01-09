@@ -1,6 +1,7 @@
 """ Ptrack Tracker: TrackingPixel registry and tracker """
 import inspect
 import ptrack
+from .exceptions import PtrackRegistrationError
 
 
 class Tracker(object):
@@ -18,14 +19,14 @@ class Tracker(object):
     def register(self, trackingpixel_callback):
         """ Register a new TrackingPixel """
         if inspect.isclass(trackingpixel_callback) is False:
-            msg = trackingpixel_callback + "is not a class, must inherit from ptrack.TrackingPixel"
-            raise Exception(msg)
+            msg = trackingpixel_callback + " is not a class, must subclass ptrack.TrackingPixel"
+            raise PtrackRegistrationError(msg)
         elif trackingpixel_callback.__name__ in self._registry:
             msg = "ptrack already has class " + trackingpixel_callback.__name__ + " registered"
-            raise Exception(msg)
+            raise PtrackRegistrationError(msg)
         elif issubclass(trackingpixel_callback, ptrack.TrackingPixel) is False:
-            msg = trackingpixel_callback.__name__ + "does not inherit from ptrack.TrackingPixel"
-            raise Exception(msg)
+            msg = trackingpixel_callback.__name__ + " does not inherit from ptrack.TrackingPixel"
+            raise PtrackRegistrationError(msg)
         else:
             self._registry[trackingpixel_callback.__name__] = trackingpixel_callback()
 
