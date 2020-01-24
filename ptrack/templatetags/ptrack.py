@@ -4,9 +4,9 @@ import logging
 from django import template
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.urls import reverse
 from django.utils.html import mark_safe
 
-from ptrack.compat import reverse
 from ptrack import ptrack_encoder
 
 logger = logging.getLogger(__name__)

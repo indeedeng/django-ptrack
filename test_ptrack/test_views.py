@@ -5,9 +5,9 @@ from unittest.mock import MagicMock
 
 from django.template import engines
 from django.test import TestCase
+from django.urls import reverse
 
 import ptrack
-from ptrack.compat import reverse
 from ptrack.views import TRANSPARENT_1_PIXEL_GIF
 
 
