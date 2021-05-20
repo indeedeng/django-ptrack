@@ -6,6 +6,7 @@ from typing import Any, Dict, Tuple, Union
 import nacl.secret
 import nacl.utils
 from django.conf import settings
+from ptrack.exceptions import PtrackKeyTooLong
 
 
 BLOCK_SIZE = 32
@@ -15,6 +16,8 @@ PADDING = '{'
 
 def pad(msg):
     """Padding for keys on 32 byte blocks."""
+    if len(msg) > 32:
+        raise PtrackKeyTooLong("Key should not be greater than 32 bytes")
     return msg + (BLOCK_SIZE - len(msg)) * PADDING
 
 
