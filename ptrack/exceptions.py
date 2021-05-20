@@ -4,7 +4,3 @@ class PtrackError(Exception):
 
 class PtrackRegistrationError(PtrackError):
     """Error raised when Ptrack tracking pixel fails to register."""
-
-
-class PtrackKeyTooLong(PtrackError):
-    """Error raised when secret key > 32"""
