@@ -101,6 +101,40 @@ In `url.py`, register 'ptrack.urls' on your desired url prefix pattern:
 url('^ptrack/', include('ptrack.urls')),
 ```
 
+### Tracking dictionary values in template tag
+The general use of `ptrack` as a template tag is:
+```
+{% ptrack key1=value1 key2=value2 %}
+```
+However, doing above requires explicity writing out all key value pairs. If the template context contains a field having dictionary type data (example: `dict_field = {"df_key1": "df_value", "df_key2": 2}`), or field that references a model object with a property method that returns a dictionary type data (example: `model_field = model`, such that `model.dict_property` returns `{"model_key1": "model_key", "model_key2": 3}`), then it is possible to collect these values within `ptrack` by passing them as positional arguments to the `ptrack` template tag, like:
+```
+{% ptrack dict_field model_field.dict_property key1=value1 key2=value2 %}
+```
+Additionally, the `CustomTrackingPixel.record` method must be modified to read the positional arguments and include them with the keyworded arguments, like:
+```
+import ptrack
+class CustomTrackingPixel(ptrack.TrackingPixel):
+    def record(self, request, *args, **kwargs):
+        log.info(request.META['HTTP_USER_AGENT'])
+        args_updated_dict = { **kwargs }
+        for arg in args:
+            if instance(arg, dict):
+                args_updated_dict.update(arg)
+            else:
+                log.info(arg)
+        # Below, `args_updated_dict` includes keywords from both `kwargs` and dictionary type `arg` argument
+        for key, value in args_updated_dict:  
+            if key == "testemail1":
+                log.info("Recorded test email")
+            else:
+                log.info(key + ":" + value)
+                
+ptrack.tracker.register(CustomTrackingPixel)
+```
+
+### Capturing time to open
+It is possible to accommodate use case where it is needed to identify the time between when tracking pixel was created to when it gets activated. For example, the time difference between when an email containing the tracking pixel is created to when the user opens it. To do so, a numeric values `pixel_create_time` can be added in the `ptrack` template tag, and `CustomTrackingPixel.record` method can be modified to read the `pixel_create_time` and evaluate the time difference since then. This is assuming that the email was sent as soon as it was rendered.
+
 ## Validation requirements
 Ptrack ignores anything it cannot decrypt or deserialize.
 Callbacks are not run if someone attempts to guess a URL endpoint.
