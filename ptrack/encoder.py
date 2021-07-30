@@ -6,6 +6,7 @@ from typing import Any, Dict, Tuple, Union
 import nacl.secret
 import nacl.utils
 from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 BLOCK_SIZE = 32
@@ -43,7 +44,7 @@ class PtrackEncoder(object):
         box = nacl.secret.SecretBox(key)
         nonce = nacl.utils.random(nacl.secret.SecretBox.NONCE_SIZE)
 
-        data = json.dumps((args, kwargs))
+        data = json.dumps((args, kwargs), cls=DjangoJSONEncoder)
         # box expects bytes, so we convert here
         bytes_data = data.encode('utf8')
         encrypted = box.encrypt(bytes_data, nonce)
