@@ -115,7 +115,6 @@ Additionally, the `CustomTrackingPixel.record` method must be modified to read t
 import ptrack
 class CustomTrackingPixel(ptrack.TrackingPixel):
     def record(self, request, *args, **kwargs):
-        log.info(request.META['HTTP_USER_AGENT'])
         args_updated_dict = { **kwargs }
         for arg in args:
             if instance(arg, dict):
@@ -124,10 +123,7 @@ class CustomTrackingPixel(ptrack.TrackingPixel):
                 log.info(arg)
         # Below, `args_updated_dict` includes keywords from both `kwargs` and dictionary type `arg` argument
         for key, value in args_updated_dict:  
-            if key == "testemail1":
-                log.info("Recorded test email")
-            else:
-                log.info(key + ":" + value)
+            log.info(key + ":" + value)
                 
 ptrack.tracker.register(CustomTrackingPixel)
 ```
