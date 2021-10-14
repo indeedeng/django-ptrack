@@ -2,6 +2,7 @@
 from django.views.generic import TemplateView
 from django.shortcuts import HttpResponse
 from ptrack import tracker
+from nacl.exceptions import CryptoError
 import ptrack
 
 TRANSPARENT_1_PIXEL_GIF = b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00\x21\xf9\x04\x01\x00\x00\x00\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"  # noqa: E501
@@ -20,7 +21,7 @@ class TrackingPixel(TemplateView):
         args, kwargs = (), {}
         try:
             args, kwargs = ptrack.ptrack_encoder.decrypt(ptrack_encoded_data)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, CryptoError):
             # Ignore any non valid inputs, which cannot be decrypted or deserialized
             pass
 
