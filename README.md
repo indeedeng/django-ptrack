@@ -124,7 +124,7 @@ class CustomTrackingPixel(ptrack.TrackingPixel):
         # Below, `args_updated_dict` includes keywords from both `kwargs` and dictionary type `arg` argument
         for key, value in args_updated_dict:  
             log.info(key + ":" + value)
-                
+
 ptrack.tracker.register(CustomTrackingPixel)
 ```
 
@@ -137,10 +137,7 @@ Callbacks are not run if someone attempts to guess a URL endpoint.
 
 
 ## Testing
-To build tests, navigate to the ptrack directory on your local machine and run
-```
-python setup.py test
-```
+To build tests, navigate to the ptrack directory on your local machine and run `tox`. Install tox if neccesary with `pip install tox`.
 
 ## Overriding the encoder
 While ptrack should work out of the box, you have the ability to create your own encoder.
