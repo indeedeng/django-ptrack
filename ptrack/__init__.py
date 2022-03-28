@@ -26,6 +26,7 @@ def autodiscover():
 class TrackingPixel(object):
     """The custom tracking pixel registered by tracker."""
     __metaclass__ = abc.ABCMeta
+
     @abc.abstractmethod
     def record(self, *args, **kwargs):
         """Callback executed when the tracking pixel img loads."""
