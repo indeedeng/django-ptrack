@@ -31,11 +31,10 @@ class PtrackEncoder(object):
         box = nacl.secret.SecretBox(key)
 
         encrypted = base64.urlsafe_b64decode(encoded_data)
-        data = box.decrypt(encrypted)
+        data_as_bytes = box.decrypt(encrypted)
         # json.loads expects a str, so we convert bytes to str
-        if isinstance(data, bytes):
-            data = data.decode(encoding='utf8')
-        return json.loads(data)
+        data_as_str = data_as_bytes.decode(encoding='utf8')
+        return json.loads(data_as_str)
 
     @staticmethod
     def encrypt(*args, **kwargs) -> str:
