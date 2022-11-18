@@ -33,7 +33,8 @@ class PtrackEncoder(object):
         encrypted = base64.urlsafe_b64decode(encoded_data)
         data = box.decrypt(encrypted)
         # json.loads expects a str, so we convert bytes to str
-        data = data.decode('utf8')
+        if isinstance(data, bytes):
+            data = data.decode(encoding='utf8')
         return json.loads(data)
 
     @staticmethod
