@@ -1,0 +1,17 @@
+name: tox
+on: [push, pull_request]
+jobs:
+  tox:
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [py36-django111, py36-django22, flake8, mypy]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.6
+      - run: pip install --upgrade pip
+      - run: pip install tox
+      - run: tox -e ${{ matrix.job }}
