@@ -1,6 +1,9 @@
 *.egg*
-/src/*
-/ptrack_test.db
-/.coverage
+*.db
 *.pyc
 .idea/
+
+.coverage
+coverage.xml
+.tox
+.mypy_cache
