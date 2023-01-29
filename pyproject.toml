@@ -1,0 +1,43 @@
+[tool.bandit]
+exclude = ["migrations", "squashed_migrations"]
+
+[tool.black]
+line-length = 120
+target-version = ['py39', 'py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  | migrations
+  | squashed_migrations
+)/
+'''
+
+[tool.isort]
+atomic = "True"
+known_first_party = "ptrack"
+known_django = "django"
+line_length = 120
+profile = "black"
+remove_redundant_aliases = "True"
+sections = "FUTURE,STDLIB,DJANGO,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+skip = "migrations,squashed_migrations"
+src_paths = ["apps"]
+
+[tool.mypy]
+no_implicit_optional = true
+python_version = "3.9"
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+exclude = [
+]
+
+[tool.vulture]
+exclude = [".venv/", "migrations/", "squashed_migrations/"]
+ignore_decorators = ["@task",]
+make_whitelist = true
+min_confidence = 80
+paths = ["apps/",]
+sort_by_size = true
+verbose = false
