@@ -1,9 +1,7 @@
-*.egg*
 *.db
+*.egg*
 *.pyc
-.idea/
-
 .coverage
-coverage.xml
-.tox
 .mypy_cache
+.tox
+coverage.xml
