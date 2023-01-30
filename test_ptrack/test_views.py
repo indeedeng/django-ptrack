@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 import ptrack
-from ptrack.views import TRANSPARENT_1_PIXEL_GIF
+from ptrack.views import TRANSPARENT_1_PIXEL_GIF, TRANSPARENT_1_PIXEL_PNG
 
 # setup
 _test_data_params = [
@@ -64,12 +64,28 @@ class PtrackViewsTest(TestCase):
     csrf_checks = False
 
     def test_pixel_image_is_valid(self):
-        """Test if the transparent 1 Pixel GIF file is recognised as a GIF."""
+        """
+        Test if the transparent 1 Pixel GIF file is recognised as a GIF.
+
+        Note this does not check the dimensions of the returned object.
+        """
         with NamedTemporaryFile() as fp:
             fp.write(TRANSPARENT_1_PIXEL_GIF)
             fp.flush()
             what = imghdr.what(fp.name)
         self.assertEqual("gif", what)
+
+    def test_pixel_image_png_is_valid(self):
+        """
+        Test if the transparent 1 Pixel PNG file is recognised as a PNG.
+
+        Note this does not check the dimensions of the returned object.
+        """
+        with NamedTemporaryFile() as fp:
+            fp.write(TRANSPARENT_1_PIXEL_PNG)
+            fp.flush()
+            what = imghdr.what(fp.name)
+        self.assertEqual("png", what)
 
     def test_app_is_accessible(self):
         """Test that the URL is accessible and returns a valid response code."""
